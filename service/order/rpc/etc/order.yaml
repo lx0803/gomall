@@ -14,7 +14,7 @@ CacheRedis:
   Type: node
   Pass:
  
- UserRpc:
+UserRpc:
   Etcd:
     Hosts:
     - etcd:2379
