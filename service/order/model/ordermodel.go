@@ -26,6 +26,7 @@ type (
 	OrderModel interface {
 		Insert(data *Order) (sql.Result, error)
 		FindOne(id int64) (*Order, error)
+		FindAllByUid(uid int64) ([]*Order, error)
 		Update(data *Order) error
 		Delete(id int64) error
 	}
@@ -103,4 +104,20 @@ func (m *defaultOrderModel) formatPrimary(primary interface{}) string {
 func (m *defaultOrderModel) queryPrimary(conn sqlx.SqlConn, v, primary interface{}) error {
 	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", orderRows, m.table)
 	return conn.QueryRow(v, query, primary)
+}
+
+func (m *defaultOrderModel) FindAllByUid(uid int64) ([]*Order, error) {
+	var resp []*Order
+
+	query := fmt.Sprintf("select %s from %s where `uid` = ?", orderRows, m.table)
+	err := m.QueryRowsNoCache(&resp, query, uid)
+
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }
