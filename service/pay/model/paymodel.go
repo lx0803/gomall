@@ -20,8 +20,6 @@ var (
 	payRowsWithPlaceHolder = strings.Join(stringx.Remove(payFieldNames, "`id`", "`create_time`", "`update_time`"), "=?,") + "=?"
 
 	cachePayIdPrefix = "cache:pay:id:"
-
-	cachePayIdPrefix  = "cache:pay:id:"
 	cachePayOidPrefix = "cache:pay:oid:"
 )
 
